@@ -1,0 +1,12 @@
+GDPR vs HIPAA
+The GDPR governs the use of and applies to all personal data of the persons that fall within its scope, while HIPAA having a much narrower scope, only applies to HIPAA protected health information (PHI). In the table below, we’ll look at the Key differences between the GDPR and HIPAA.
+
+GDPR	HIPAA
+Protected data	  Any data that relates to, or can lead to the identification of a living person.	Any information about health status, care, or payment that is created or collected by a HIPAA Covered Entity (or a Business Associate of a Covered Entity), that can be linked to a specific individual.
+Scope	Sets compliance standards for all entities that fall within its scope	Sets standards for covered entities and their business associates
+Consent	Explicit consent is mandatory for the processing of personal health data (which falls under sensitive data). However, the data may be processed without consent if it meets one of the conditions of processing in Article 9 of the GDPR and a legal basis applies.	Allows disclosure of some PHI for “treatment purposes” without the consent of the individual
+Right to be forgotten	Under the GDPR, individuals have the right to be forgotten (or to have their data deleted upon request)	HIPAA does not grant this right
+Data breaches	The Supervisory Authority must be notified within 72 hours. Affected persons must also be notified.	Organizations must protect PHI and limit disclosure under the HIPAA Privacy Rule. Covered entities must also notify affected individuals of security breaches. If more than 500 people are affected, both affected individuals and the Department of Health must be informed within 60 days.
+
+
+https://www.iubenda.com/en/help/22623-gdpr-vs-hipaa
