@@ -1,0 +1,205 @@
+Even Driven Architecture
+In this we will try to learn and understand  what EDA architecture is, why it was created, what its components are, and how it is used in the ecosystem.  In this you'll learn the core concepts of EDA. In next section  you'll walk through the implementation of a simple EDA use case Project. 
+
+	Have you ever developed an event-driven application or heard about this architectural approach? 
+	You might be surprised to learn that you may be using it even if you've never heard of it! 
+	Let’s understand this little bit , Service-based architectures, like microservices or SOA, are commonly built with synchronous request-response protocols. This approach is very natural. It is, after all, the way we write programs: we make calls to other code modules, await a response, and continue.  It also fits closely with a lot of use cases we see each day: front-facing websites where users hit buttons and expect things to happen, then return. 
+o	But when we step into a world of many independent services, things start to change.  As the number of services grows gradually, the web of synchronous interactions grows with them. 
+o	Previously benign availability issues start to trigger far more widespread outages. Our ops engineers often end up as reluctant detectives, playing out distributed murder mysteries as they frantically run from ser‐ vice to service, piecing together snippets of second hand information. (Who said what, to whom, and when?) This is a well-known problem, and there are a number of solutions. 
+o	One is to ensure each individual service has a significantly higher SLA than your system as a whole. Google provides a protocol for doing this. An alternative is to simply break down the synchronous ties that bind services together using 
+(a) Asynchronicity and 
+(b) a message broker as an intermediary which is Event driven communication.
+	Event-driven communication is important when propagating changes across several microservices and their related domain models. 
+This means that when changes occur, we need some way to coordinate changes across the different models. This ensures reliable communication as well as loose coupling between microservices.
+	First, we need to understand what an event is in the context of a system. Every change of information, even the tiniest change, can be considered an event. 
+For example, the change of a user address can be considered an event.
+Changing an address - let's say in a mobile company's system - is an event that can trigger other events in other systems, such as billing, email, etc. Instead of having the producer calling the billing system directly, which would be tightly coupled, in the event-driven architecture we basically hide both, keeping them apart from each other.
+	This way, the producer system will send an event to an event bus, which will be listened to by the consumer. An event does not carry much data on it; it only carries the information that is necessary for the consumers to be able to do their job.
+
+
+This approach helps developers in terms of application responsiveness. On monolith systems, the whole application is coupled together, so when scaling needs to happen, the whole application has to be taken down. In fact, the entire application has to be deployed every time there is a single change in one part of the system.
+Event-driven architecture was created to help developers have a decoupled and responsive application. Because of this, it has been widely used in applications that have been broken down from monoliths to microservices.
+ 
+
+
+Differences Between Monolithic , Microservices  & Event-Driven Architecture:
+ 
+
+Architectural concerns & complexities :
+By combining EDA and Microservices architecture styles, developers can easily achieve non-functional qualities such as performance, scalability, availability, resiliency, and ease of development. However, these two architectural styles also introduce some major concerns.
+Some of these concerns include:
+	A large number of distributed and independently deployed components or services, which introduces these issues:
+	Design and implementation complexity,
+	Understanding and debugging of such systems is difficult. Event processing workflows are not intuitive and need to be documented.
+	Multiple points of failure 
+	Increased complexity in testing, debugging, and exception handling.
+	The release process, deployment, and system monitoring 
+	gets complicated and requires high level of automation.
+	From a development perspective, 
+	consistency in implementation, conformance to design, and implementation standards is desired. However, there are multiple development squads. This could result in inconsistent implementation and quality issues. Therefore the development of a reference architecture that outlines the use of architectural patterns, development frameworks, development of reusable services or utilities, and setting up a robust and effective governance model is essential.
+	Asynchronous event 
+	processing is difficult compared to synchronous processing due to requirements related to event ordering or sequencing, callbacks, and exception handling.
+	Losing information or events is not desirable (obviously).
+	 So, the requirements for extremely highly available, scalable, and fault-tolerant systems are especially important, which makes designing and deployment of the systems quite complex. Event producers and consumers have to be designed to withstand failures, have the ability to replay failed events, and have deduplication capabilities.
+	Lack of support for distributed transactions
+	 This issue means that developers must create custom and complex rollback and recovery implementations spanning across multiple distributed systems.
+	Maintaining data consistency
+	Due to the distributed nature and multiple systems of record, maintaining data consistency is complex. In most of the cases, it is eventual consistency due to lack of atomic transactions across multiple distributed systems.
+	Event consumers and producers 
+	have to consider properties that are specific to products that are used for event brokers, data caches, and so on. For example, delivery guarantee influences the design of producers and consumers.
+Patterns of Event-Driven Architecture:
+
+	There are several ways to implement event-driven architecture, and which method you use depends on the use case and how many microservices are included. Here are some  common examples:
+ Saga
+The idea here is to put up sequence transactions that provide bigger and higher business purpose to manage data across microservices then we chain these transactions together. Each transaction updates the database and publishes an event to trigger the next transaction. If a transaction fails, saga will run compensation logic to go backwards and undo that effect or failure.
+Command and Query Responsibility Segregation (CQRS)
+With CQRS, you divide the application into two segments. One is intended for the update and delete which is called the writing model. You do the read on the other side of the model which is called the read model. Each side is optimized for quick and effective operation, whether reading or writing. It may join pieces of data across various entities.
+Event Sourcing
+An event source pattern is an approach that handles data after a sequence of events. These events are stored in an append-only store. These event stores act as a history of records of the changes in the states of the data and notify the consumer to handle them.
+Additionally, the applications can access the history of events for the past 7 days to check the current state of an entity at any given time. 
+Publish-Subscriber
+The application will send message events to the consumers that are interested in updates. The sender will input a message to the input channel and pass it to the consumers. Here, the sender is the publisher and for each consumer, there is one output called subscribers.
+A message broker is responsible for copying each message from the publisher and sending it to all the subscribers. It helps make the application run smoother and more reliable.
+
+Key architectural considerations:
+
+Architectural considerations influence the architecture of a system.  Non-functional characteristics of the system is important and better architecture makes it easy, so we have some key consideration while choosing event driven microservice based system and implementation. 
+ 
+
+
+Event modelling:
+Event modelling consists of defining event types, event hierarchy, event metadata, and payload schemas. Carefully consider these event modelling characteristics:
+•	Event types. In an enterprise system there are multiple business domains each consuming and producing different types of events. One of the key aspects of modelling is identifying events types and events. Use domain driven design and practices such as event storming and event sources, to identify and classify events. Event types can be hierarchical in nature which help in having a layered approach to event processing. Define event types and events to cover all business requirements and map them to different business processes or workflows. Granularity of event types is of key importance to avoid tight coupling between components. Event types are key to defining routing rules.
+•	Event schema. Event schema is comprised of event metadata (such as type, time, source system, and so on) and payload (that is, information) that is used for processing by event processors. Event type is typically used for routing. Event metadata is typically used for correlating and ordering events, but it can be used for audit and authorization purposes as well. Payloads influence the sizing of queues, topics and event stores, network performance, (de)serialization performance, and resource utilization. Avoid duplicating content. You can always just regenerate the state by replaying the events whenever required.
+•	Versioning. Requirements and implementation evolve over time and they often will impact the event model. Changes to the event model can potentially impact too many microservices. Changing all impacted services simultaneously is not practical. Therefore, the event model should have support for multiple versions and be backward compatible so that microservices can change at a time convenient to them. It is also a good idea to add new attributes to the payload instead of changing the existing attributes (deprecate instead of change). Versioning is dependent on serialization format.
+•	Serialization format. There are multiple serialization formats that can be used to encode the event and its payload, such as JSON, protobuf, or Apache Avro. Important considerations here are schema evolution support, (de)serialization performance and serialized size. It is very easy to develop and debug JSON because the event message is human readable, but JSON is not performant and could increase the event storage requirement. Whereas Avro or Protobuf reduce the size of the payload, are fast, and support schema evolution, they require additional design and development effort.
+•	Partitioning. The partitioning of events is important to increase concurrency, scalability, and availability. Partitioning is also key to the ordering of messages. From an architecture perspective, selecting a partitioning key is important. Having a very coarse-grained key will impact scalability and concurrency. Having a very fine-grained key might not help in preserving order of events. In event brokers such as Kafka, partitioning bounds the scalability of event consumers.
+•	Ordering. Some events might need to be ordered (at least for the given entity) based on their arrival time. For example, account transactions for a given account have to be processed sequentially. It is important to identify events that require ordering. Ordering should be used only where it is essential, since it has an impact on performance and throughput. In Apache Kafka, ordering of events is directly related to partitioning.
+•	Event durability Durability means how long should the event be available on the queues or topics. For example, should you delete the event as soon as it is consumed. Delete events older than the configured retention period. Delete events which have explicit markers (such as tombstones in Kafka). Based on the requirements, one of these should be chosen and configured. While using time based retention, consider how long the events should be available for replay if required. If the event store pattern is being used, then an additional question about number of versions of the same event or payload that need to be maintained has to be thought about. Event brokers such as Kafka provide various configuration options that can be set at the topic level to specify the durability of events.
+
+Technology stack:
+
+The components such as event brokers, data caches or grids, microservices frameworks, security mechanisms, distributed databases, monitoring systems, and alerting systems form the technology backbone of event-driven, microservices-based systems. This backbone provides support for key architectural qualities (performance, availability, reliability, operating cost, fault-tolerance, and so on) and simplifies development. It also influences several design and development decisions.
+When choosing your technology stack, consider these characteristics:
+•	Horizontal Scalability of individual components. Scaling should not compromise availability. That is, the addition of nodes should not require downtime.
+•	High Availability of individual components. The selected product or framework should support clustering with capability to have members across different availability zones or regions, support rolling upgrades, support data replication, and should be fault-tolerant which means the cluster should re-balance itself in case of loss of nodes.
+•	Cloud Affinity, which means it should be easy to deploy on cloud. In fact, if they are available as services on a PaaS platform, it’s even better because it reduces management and maintenance overhead. Support for containerization is a must.
+•	Low operating cost, which means it should be able to run on commodity hardware and should be frugal in terms of CPU, memory, and storage.
+•	Configurability and tuning of the behaviour and non-functional characteristics without downtime.
+•	Manageability.
+•	Vendor lock-in should be avoided. Choose products that are based on open standards or are open source products. When choosing an open source product, consider how widely adopted the product is, whether it has a thriving developer community, and the license should be open and not very restrictive (such as the Apache License V2.0).
+•	For event brokers and development frameworks, they should have support for:
+•	Multiple serialization formats (JSON, AVRO, Protobuf, etc)
+•	Exception handling and dead letter queues (DLQs)
+•	Stream processing (including support for aggregations, joins, and windowing)
+•	Partitioning and preserving the order of events
+•	Reactive programming support is nice to have.
+•	Polyglot programming support is nice to have in Event backbone.
+ 
+
+Event processing topology :
+In EDA, processing topology refers to the organization of producers, consumers, enterprise integration patterns, and topics and queues to provide event processing capability. They are basically event processing pipelines where parts of functional logic (processors) are joined together using enterprise integration patterns and queues and topics. Processing topology is a combination of the SEDA, EIP, and Pipes & Filter patterns. For complex event processing, multiple processing topologies can be connected to each other.
+Another key concept in processing topology is orchestration vs choreography. Orchestration refers to having a central orchestrator that orchestrates the processing workflow by calling different components. Whenever a strict control is required over processing, orchestration is chosen, such as for payments processing. Orchestration is typically used where the SAGA pattern is employed. Orchestration has a trade-off with performance and availability (as the orchestrator could become the single point of failure). Choreography refers to a completely de-centralized way of processing. That is, events are published and interested components subscribe to topics. There is no central component to control the processing flow. Choreography is complex to implement and maintain.
+Consider these guidelines for creating processing topologies:
+•	Processing stages (processors) should be connected using persistent queues and topics.
+•	Configure partitioning keys and message retention policies at each queue or topic.
+•	Granularity of processing is important. If the processors are too fine grained, then there is a chance of tight coupling between processors. Ideally, each processor should be logically independent of each other.
+•	Microservices can be used for implementing processors. This allows for loose coupling, segregation of responsibilities, and ease of development.
+•	Processing concurrency should be configurable at processor level.
+•	Use proven Enterprise Integration Patterns (EIPs). Choose development frameworks that provide built-in support for EIP such as Apache Camel or Spring-cloud-stream.
+•	Build modular and hierarchical processing topologies such that complex event processing is achieved by assembling simple processing pipelines. This helps in making the implementation modular and easy to update.
+•	If processors have a state (that changes with events), consider having stores to back the states for increased fault-tolerance and recoverability.
+Architectural practices such as Process event streams and Event managed state can be used to design the processing topology. It is also good to have a detailed understanding of event broker capabilities while defining the processing topology. For instance Kafka streams provides first class support for defining event stream processing topologies. Kafka also provides automatic support for state stores when performing aggregation and join operations on event streams.
+Deployment topology:
+In an EDA-microservices architecture, there are numerous components to deploy. A deployment topology should be chosen such that architectural requirements related to scalability, availability, resiliency, security, and cost are met. However, there are trade-offs to be made between redundancy, performance, and cost. Deployment to cloud makes the architecture even more performant, resilient, and cost efficient. Capabilities that are provided by cloud deployments (such as high availability setup in Kubernetes) should be exploited.
+Consider these key principles to consider for your deployment topology:
+•	Each deployed component should be independently scalable and deployed as a cluster to increase concurrency and resiliency.
+•	Ensure that each cluster spans across multiple availability zones. This setup gives more resiliency in case of data-center failures. An added advantage of this is, instead of having a passive DR, an active-active deployment across different availability zones or regions can be done.
+•	Replication factor determines the number of replicas of an event or information. Without replication, failure of individual instances (even though clustered) would result in data loss. This is especially required for event brokers and databases. However, replication comes at compute and storage cost. Replication should be set based on factors such as availability zones, data regions, number of nodes, and so on.
+•	In the case of Kafka, the number of topic partitions places an upper bound on concurrency of consumers.
+•	Throttling of workloads. Configure thread pools and the number of instances of consumers and producers to throttle throughput. Depending on the volume and throughput of the downstream processors, these parameters need to be adjusted accordingly.
+•	Data compression. If the payload size is big and CPU availability is high, then compression can be used to compress the events before transmission. However, compression is a tradeoff between network utilization and CPU utilization.
+•	Data encryption. Based on security standards in the organization, configure TLS, authentication, and authorization between the event broker and producers and consumers (and for your databases). Please note that enabling TLS can increase CPU utilization.
+Additionally, it is important to have support for automated deployments, automated failover, rolling upgrades or blue-green deployments, and the externalization of the configuration to make the environment of the deployment artifacts independent.
+Architectural patterns:
+Choosing architectural and integration patterns is a critical architectural consideration for event-driven, microservices-based systems. They provide proven and tested solutions for many desired architectural qualities. The following architectural patterns are extremely useful in developing event-driven, microservices-based systems:
+ 
+
+Additionally many Enterprise Integration Patterns and Microservices patterns provide the building blocks for event-driven microservices-based systems.
+Patterns need to be chosen based on requirements and architectural qualities that are desired from the system.
+Patterns need to be chosen based on requirements and architectural qualities that are desired from the system.
+
+Security:
+Architect, Developers Stack holders  must consider these aspects of security in Event Driven Architectures : -
+
+
+ 
+Exception handling strategy:
+Any system without exception handling strategy is incomplete same for Event Driven Architecture or EDA, having a comprehensive and consistent exception handling strategy is important to improve resiliency. strategy consists of all or some of the following:
+	Raising alerts
+	Logging the exception
+	Retrying the event for specified number of time and at specified retry intervals
+	Moving the event to a dead letter queue (or stopping the processing of events), if all retries are exhausted
+	In some cases generating an event
+	Correcting the cause of exception and replaying the event
+Exceptions can be of two types: 
+	System exceptions and
+	Business exceptions 
+System exceptions are a broad category of failures due to unavailability of components (database, event broker, or other microservices) or due to resource issues (such as OutOfMemory errors), network or transport related issues (such as payload serialization or de-serialization errors), or unexpected code failure (such as NullPointerException or ClassCastException).
+Business exceptions are raised when validations or a business condition fails. 
+Handling the different types of exceptions, how you can do that ?
+	System exceptions 
+	Due to unavailability of components are temporary in nature. Hence, multiple retries should be configured. Another key configuration parameter is backoff multiplier. It is used to have exponentially increasing time interval between consecutive retries. Different frameworks have different strategies if the failure persists after retries. For instance Camel would move the event to a DLQ. Kafka streams would stop the processing. It is advisable to use the default behavior of the frameworks in such scenarios.
+	Expected business exceptions 
+	Typically handled in the code. Handling could involve logging the exception, updating entities and their state, generating exception events, or consuming the exception and moving on.
+	Invalid payloads 
+	This includes serialization or de-serialization issues will not be solved with retries. Such events are referred as poision pills in Kafka (because it blocks subsequent messages of that partition). Intervention might be required for such events. It is advisable to move them to a dead letter queue (DLQ). The DLQ consumers should allow correction and replay of events.
+	Resource issues 
+	such as OutOfMemory errors are typically at the component level and would result in the unavailability of a component. The risk of losing events is minimal here due to the fault tolerant nature of the event broker. Also, when deployed in a Kubernetes environment, new pods are started to replace failed pods.
+	Data inconsistency 
+	The SAGA pattern is used where data consistency is very important and processing involves multiple microservices. Use the SAGA pattern for those events where data consistency requirements are very strict.
+	Recovery and replay 
+	should be thought about from the beginning and not applied as an afterthought (it becomes extremely complex later). Recovery and replay components are typically custom developed and vary based on event processing. The simplest replay component might just pick up the failed event and republish it on the input topic.
+Finally Your development framework should support having a consistent exception handling strategy across all microservices. It should provide a set of predefined exception classes for business exceptions and provide a generic exception handler that can be customized using configuration but enforces architectural decisions related to exception handling. 
+Most development frameworks do provide such support. However, they need to be configured correctly or extended to provide the required features.
+Event backbone capabilities and constraints:
+Different event backbone products or platforms provide support for architectural qualities differently. At the same time, they impose constraints on design and architecture. While defining the architecture, their capabilities and constraints should be considered to effectively address the non-functional requirements. For example, the following are few important capabilities and constraints for Kafka. 
+•	Kafka provides support for event ordering based on partition keys. It also ensures that there is a single consumer (thread) listening on a partition. This makes it very easy to order events just by selecting an appropriate partition key. For example, OrderId, when used as an partition key, will ensure that all events related to a particular order will be processed in the order of their arrival.
+•	Kafka supports idempotence for producers. This means Kafka ensures that an event is produced exactly once by a producer. Developers don’t need to worry about it.
+•	Kafka provides at least once delivery guarantee. This means consumers should be able to handle duplicate messages. Developers need to be aware of the guarantees provided by their event brokers.
+•	Another important aspect for Kafka is an offset-commit strategy for consumers, which means whether events should be automatically or manually acknowledged. If auto-commit is enabled, events that produce an error might get lost (if exceptions are consumed) or the consumer might see duplicate messages. Manual commits can be used to counter this, but it requires additional code. Frameworks such as spring-cloud-stream that work seamlessly with Kafka, provide the choice of not auto-committing in case of errors or moving the failed events to a DLQ in addition to manual/auto-commit. This is an important aspect that needs to be thought through during design.
+•	Kafka Streams provides the ability to process event streams and easily perform various advanced and complex operations on event streams such as aggregations and joins. This makes it is very easy to perform analytics in real time. For example, computing real-time statistics of events grouped by various dimensions requires very minimal coding. These are stateful operations and maintain a state. Kafka also provides automatic fault-tolerance through state-stores.
+
+Fault tolerance and response:
+To provide adequate fault tolerance, the architecture needs to provide redundancy, exception handling, and elastic scaling (scaling up when thresholds are breached and scaling down when load returns to normal). With EDA and cloud, most of these can be easily achieved. Event backbones cater to fault-tolerance by supporting the clustering and replication of queues and topics. Producers and consumers can have multiple instances deployed. When deployed as containers on a Kubernetes platform, elastic scaling can be easily achieved through auto-scaling (using horizontal pod auto-scalers) but exception handling has to be designed for producers and consumers.
+Although EDA-based systems provide for resiliency through staged architecture, quick failure response and recovery is critical to avoid delays and consistency issues. To achieve this quick recovery, you need:
+
+Observability:
+Observability includes monitoring, logging, tracing, and alerting. Each component of the system should be observable to avoid failures and also to quickly recover from failures.
+Most of the EDA products and development frameworks provide support for observability by publishing metrics that can be exported into industry-standard observability tools such as Prometheus and Grafana, ELK, StatsD and Graphite, Splunk, or AppDynamics. For example, Apache Kafka provides detailed metrics that can be exported and integrated with most of these tools. Also, cloud platforms that offer managed services for an event backbone (IBM Event Streams) provide first class support for observability. Microservices development frameworks such as Spring or Camel provide good support for code instrumentation for monitoring.
+From an EDA perspective, instrumenting the code of producers and consumers for publishing metrics, publishing event broker metrics, and correlating these through a metrics dashboard is essential because the number of distributed components in EDA is high. Some of the key metrics from an EDA perspective are rate of incoming and outgoing messages, lag in consumption, network latency, queue and topic sizes, and so on.
+For monitoring microservices, refer to my article on Monitor Spring Boot microservices for a detailed tutorial on instrumenting and monitoring microservices.
+
+
+
+
+
+
+
+
+
+
+Advantages Of Event Driven Architectures:
+Improved Flexibility And Maintainability
+High Scalability
+Improved Availability
+Good Reliability
+Good Performance and Responsiveness
+
+Final Considerations:
+In this section we have gone through the Event Driven Architecture and Some of the detailing about concepts. It’s important to note that even though there are advantages to using this architectural design, there are also challenges. 
+For example, this approach requires much more expertise from developers, since there may be debugging and testing problems that are far more difficult to resolve due to their asynchronous nature. This architecture also requires a lot from DevOps teams, since they need to control the flow of what is happening in an application because it's essential to know if everything is up and running correctly. 
+When choosing an architectural pattern, choose wisely and select a pattern that meets your business requirements. If you have a requirement that has divided transactions that are processed separately, EDA may be the pattern that you are looking for. 
+Developers can combine Event Driven Architecture and Microservices Architecture styles to develop distributed, highly available, fault-tolerant, and high-throughput systems. These systems can process very large amounts of information and can have extreme scalability. However, while building such systems, developers must consider many architectural concerns and complexities and make many key architectural decisions. In this article, the key architectural decisions and what factors need to be considered for making those decisions have been discussed. By following the guidance in this article, a robust EDA-Microservices architecture can be defined to achieve the desired objectives.
+
+
