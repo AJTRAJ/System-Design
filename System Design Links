@@ -150,3 +150,48 @@ If I had to start building my system design fundamentals from zero, this is the 
 P.S: Schedule a 1:1 call with me and get guidance on your doubts. 
 
 Link → https://lnkd.in/eX8cF2aC
+
+1/ How Amazon S3 Achieves 99.999999999% Durability:
+↳ https://lnkd.in/eutGiK35
+
+2/ How YouTube Was Able to Support 2.49 Billion Users With MySQL:
+↳ https://lnkd.in/efmJw4Dx
+
+3/ How Cloudflare Supports 55 Million Requests per Second With 15 Postgres Clusters:
+↳ https://lnkd.in/eEQP6Apw
+
+4/ Live Comment System Design:
+↳ https://lnkd.in/e8g3dZ2i
+
+5/ How Uber Computes ETA at Half a Million Requests per Second:
+↳ https://lnkd.in/eVKV2ePC
+
+6/ How Stripe Prevents Double Payment Using Idempotent API:
+↳ https://lnkd.in/erMkqwq4
+
+7/ How Uber Finds Nearby Drivers at 1 Million Requests per Second:
+↳ https://lnkd.in/eeqH9Hjh
+
+8/ Amazon Lambda System Design:
+↳ https://lnkd.in/eNd3Z5Yn
+
+9/ How to Scale an App to 10 Million Users on AWS:
+↳ https://lnkd.in/eU736g9Q
+
+10/ Real-Time Leaderboard System Design:
+↳ https://lnkd.in/edfTDq5R
+
+11/ How Tinder Scaled to 1.6 Billion Swipes per Day:
+↳ https://lnkd.in/en65fv-W
+
+12/ Distributed Counter System Design:
+↳ https://lnkd.in/eGwaA62J
+
+13/ Google Search System Design:
+↳ https://lnkd.in/eAiQqnwd
+
+14/ URL Shortener System Design:
+↳ https://lnkd.in/evFTZVQq
+
+15/ How Meta Achieves 99.99999999% Cache Consistency:
+↳ https://lnkd.in/e88kUZAm
